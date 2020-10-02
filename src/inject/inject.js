@@ -12,19 +12,27 @@ const transformers = {
 }
 const get_quantity = (q, a) => {
   if (q.indexOf('/') > -1) {
-    return eval(`${a}+  (${q})`)
+    return eval(`${a} + (${q})`)
   }
   return parseFloat(a+q)
 }
 const is_num = str => /^\d+$/.test(str)
-const trim_word = (word) => {
-  if (word.endsWith(')')) {
-    word = word.slice(0,-1)
-  }
-  if (word.startsWith('(')) {
-    word = word.slice(1)
-  }
+
+const trim_word = word => {
+  word = word.endsWith(')') ? word.slice(0,-1) : word
+  word = word.startsWith('(') ? word.slice(1) : word
   return word
+}
+
+const get_word = (word) => trim_word(convert_unicode(word))
+
+const convert_unicode = word => {
+  return word
+  .replace("¼", '1/4')
+  .replace("½", '1/2')
+  .replace("¾", '3/4')
+  .replace("⅔", '2/3')
+  .replace("⅓", "1/3")
 }
 
 const adjust_text = (t) => {
@@ -37,21 +45,8 @@ const adjust_text = (t) => {
       const addition = (is_num(words[i-2]) && !words[i-1].startsWith('('))
       ? parseFloat(words[i-2])
       : 0
-      if (words[i-1].includes("¼")) {
-        words[i-1] = words[i-1].replace("¼",'1/4')
-      }
-      if (words[i-1].includes("½")) {
-        words[i-1] = words[i-1].replace("½",'1/2')
-      }
-      if (words[i-1].includes("¾")) {
-        words[i-1] = words[i-1].replace("¾",'3/4')
-      }
-      if (words[i-1].includes("⅔")) {
-        words[i-1] = words[i-1].replace("⅔",'2/3')
-      }
-      
       let quantity = get_quantity(
-        trim_word(words[i-1]),
+        get_word(words[i-1]),
         addition
       )
       let word = trim_word(words[i])
