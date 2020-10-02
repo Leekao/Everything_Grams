@@ -1,0 +1,29 @@
+{
+  "name": "Everything Grams",
+  "version": "0.0.1",
+  "manifest_version": 2,
+  "description": "transforms everything to grams",
+  "homepage_url": "http://www.github.com",
+  "default_locale":"en",
+  "icons": {
+    "16": "icons/icon16.png",
+    "48": "icons/icon48.png",
+    "128": "icons/icon128.png"
+  },
+  "permissions": [
+    "http://*/*",
+    "https://*/*"
+  ],
+  "content_scripts": [
+    {
+      "matches": [
+        "http://www.allrecipes.com/*",
+        "https://www.allrecipes.com/*"
+      ],
+      "js": [
+        "js/jquery/jquery.min.js",
+        "src/inject/inject.js"
+      ]
+    }
+  ]
+}
